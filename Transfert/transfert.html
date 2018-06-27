@@ -1,0 +1,110 @@
+<!doctype html>
+<head>
+    <title>Carte 3d Transfert</title>
+    <script src="../dist/threebox.js" type="text/javascript"></script>
+    <script src="config.js"></script>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.mapbox.com/mapbox-gl-js/v0.29.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v0.29.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        body, html { 
+            width: 100%;
+            height: 100%;
+            margin: 0;
+        }
+        #map { 
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id='map' class='map'></div>
+
+    <script>
+    if(!config) console.error("Config not set! Make a copy of 'config_template.js', add in your access token, and save the file as 'config.js'.");
+    
+    mapboxgl.accessToken = config.accessToken;
+    var map = new mapboxgl.Map({
+      container: 'map',
+      style: 'mapbox://styles/mapbox/streets-v9',
+      center: [-1.56630, 47.19390], // -1.56630, 47.19390 == Nantes ou -87.618, 41.8666 == Washington
+      zoom: 17,
+      pitch: 40,
+      heading: 41,
+      hash: true,
+      maxZoom: 24
+    });
+
+    map.on("load", function() {
+/*
+        // Initialize threebox
+        window.threebox = new Threebox(map);
+        threebox.setupDefaultLights();
+
+        var source = {
+            type: "FeatureCollection",
+            features: [
+            {
+                type: "Feature",
+                properties: { model: "boat_med", heading: 110 },
+                geometry: {
+                    type: "Point", 
+                    coordinates: [-1.56625, 47.19396] // TODO adjust localisation
+                }
+            },
+            {
+                type: "Feature",
+                properties: { model: "skull_low", heading: 80 },
+                geometry: {
+                    type: "Point",
+                    coordinates: [-1.56634, 47.19359] // TODO adjust localisation
+                }
+            },
+            ]
+        };
+
+        var symbols = threebox.addSymbolLayer({
+            id:             "scale",
+            source:         source, // You can also specify a URL or relative path such as "data/points.geojson",
+            modelName:      {property: 'model'},    // will look for an .obj and .mtl file with this name
+            modelDirectory: "models/",          // in this directory
+            //rotation:       { generator: feature => (new THREE.Euler(Math.PI /2,Math.PI,0, "ZXY")) },
+			rotation:       { generator: feature => (new THREE.Euler(Math.PI / 2, feature.properties['heading'] * Math.PI / 180 + Math.PI / 2,0, "ZXY")) },
+            scale:          [0.02,0.02,0.02],
+            scaleWithMapProjection: true
+        });
+
+        console.log(symbols);
+		*/
+		map.addLayer({
+        'id': 'room-extrusion',
+        'type': 'fill-extrusion',
+        'source': {
+            // GeoJSON Data source used in vector tiles, documented at
+            // https://gist.github.com/ryanbaumann/a7d970386ce59d11c16278b90dde094d
+            'type': 'geojson',
+            'data': 'data/buildings.geojson'
+        },
+        'paint': {
+            // See the Mapbox Style Specification for details on data expressions.
+            // https://www.mapbox.com/mapbox-gl-js/style-spec/#expressions
+
+            // Get the fill-extrusion-color from the source 'color' property.
+            'fill-extrusion-color': ['get', 'color'],
+
+            // Get fill-extrusion-height from the source 'height' property.
+            'fill-extrusion-height': ['get', 'height'],
+
+            // Get fill-extrusion-base from the source 'base_height' property.
+            'fill-extrusion-base': ['get', 'min_height'],
+
+            // Make extrusions slightly opaque for see through indoor walls.
+            'fill-extrusion-opacity': 0.5
+        }
+		});
+		
+    });
+
+    </script>
+</body>
