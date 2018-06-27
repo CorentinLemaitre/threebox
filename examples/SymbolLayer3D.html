@@ -4,8 +4,8 @@
     <script src="../dist/threebox.js" type="text/javascript"></script>
     <script src="config.js"></script>
 
-    <script src='https://api.mapbox.com/mapbox-gl-js/v0.34.0/mapbox-gl.js'></script>
-    <link href='https://api.mapbox.com/mapbox-gl-js/v0.34.0/mapbox-gl.css' rel='stylesheet' />
+    <script src='https://api.mapbox.com/mapbox-gl-js/v0.46.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v0.46.0/mapbox-gl.css' rel='stylesheet' />
     <style>
         body, html { 
             width: 100%;
@@ -27,7 +27,7 @@
     mapboxgl.accessToken = config.accessToken;
     var map = new mapboxgl.Map({
       container: 'map',
-      style: 'mapbox://styles/mapbox/streets-v9',
+      style: 'mapbox://styles/mapbox/streets-v10',
       center: [-122.4131, 37.7743],
       zoom: 15.95,
       pitch: 60,
@@ -38,6 +38,7 @@
 
     map.on("load", function() {
         // Initialize threebox
+        /*
         window.threebox = new Threebox(map);
         threebox.setupDefaultLights();
 
@@ -51,7 +52,7 @@
             scaleWithMapProjection: true,
             key:            { property: "id" }
         });
-
+*/
         // That's all you need to add a static 3D sybmol layer!
 
         // Add a native Mapbox GL JS circle layer to highlight each truck location
